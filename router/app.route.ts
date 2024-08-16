@@ -6,7 +6,7 @@ import logMiddleware from "../middlewares/app.log";
 
 const router = Router();
 
-router.use(logMiddleware);
+// router.use(logMiddleware);
 router.get("/", greeting);
 
 export default router;
