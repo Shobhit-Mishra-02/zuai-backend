@@ -1,12 +1,16 @@
 import { Router } from "express";
+import login from "../controllers/auth/login";
+import signup from "../controllers/auth/signup";
 import { greeting } from "../controllers/greeting";
-import logMiddleware from "../middlewares/app.log";
-
-// create routes here...
+import authMiddelWare from "../middlewares/auth";
 
 const router = Router();
 
-// router.use(logMiddleware);
 router.get("/", greeting);
+
+router.post("/signup", signup);
+router.post("/login", login);
+
+router.use(authMiddelWare);
 
 export default router;

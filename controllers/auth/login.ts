@@ -13,29 +13,44 @@ const login = async (req: Request, res: Response) => {
       .json({ message: "Email and password are required" });
   }
 
-  const user = await User.findOne({ email });
+  try {
+    const user = await User.findOne({ email });
 
-  if (!user) {
+    if (!user) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Invalid email or password" });
+    }
+
+    const isValidPassword = bcrypt.compareSync(password, user.password);
+
+    if (!isValidPassword) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: "Invalid email or password" });
+    }
+
+    const token = jwt.sign(
+      {
+        _id: email._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+      process.env.JWT_SECRET || "secret",
+      {
+        expiresIn: "1h",
+      }
+    );
+
     return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ message: "User not found" });
-  }
-
-  const isValidPassword = bcrypt.compareSync(password, user.password);
-
-  if (!isValidPassword) {
+      .status(StatusCodes.OK)
+      .json({ message: "Login successful", token });
+  } catch (error) {
     return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ message: "Invalid password" });
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: (error as Error).message });
   }
-
-  const token = jwt.sign(user, process.env.JWT_SECRET || "secret", {
-    expiresIn: "1h",
-  });
-
-  return res
-    .status(StatusCodes.OK)
-    .json({ message: "Login successful", token });
 };
 
 export default login;
