@@ -23,6 +23,8 @@ const authMiddelWare = async (
       process.env.JWT_SECRET || "secret"
     ) as UserInterface;
 
+    console.log(decodedUser);
+
     const user = await User.findById(decodedUser._id);
 
     if (!user) {
@@ -33,9 +35,18 @@ const authMiddelWare = async (
 
     res.locals.user = user;
 
-    const refreshToken = jwt.sign(user, process.env.JWT_SECRET || "secret", {
-      expiresIn: "1h",
-    });
+    const refreshToken = jwt.sign(
+      {
+        _id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+      process.env.JWT_SECRET || "secret",
+      {
+        expiresIn: "1h",
+      }
+    );
 
     res.setHeader("Authorization", refreshToken);
 

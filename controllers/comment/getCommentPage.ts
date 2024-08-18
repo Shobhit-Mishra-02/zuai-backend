@@ -10,7 +10,8 @@ const getCommentPage = async (req: Request, res: Response) => {
     const comments = await Comment.find()
       .limit(limit as number)
       .skip(skip)
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .populate("user");
 
     return res.status(StatusCodes.OK).json({ comments });
   } catch (error) {

@@ -27,6 +27,8 @@ const likeBlog = async (req: Request, res: Response) => {
       },
       { new: true }
     );
+
+    return res.status(StatusCodes.OK).json({ message: "Blog liked", blog });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: (error as Error).message,

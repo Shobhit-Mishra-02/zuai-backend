@@ -29,7 +29,11 @@ const dislikeBlog = async (req: Request, res: Response) => {
     );
 
     return res.status(StatusCodes.OK).json({ message: "Blog disliked", blog });
-  } catch (error) {}
+  } catch (error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: (error as Error).message,
+    });
+  }
 };
 
 export default dislikeBlog;
