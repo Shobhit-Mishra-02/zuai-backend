@@ -22,6 +22,7 @@ import makeComment from "../controllers/comment/makeComment";
 import updateComment from "../controllers/comment/updateComment";
 import getCommentPage from "../controllers/comment/getCommentPage";
 import deleteComment from "../controllers/comment/deleteComment";
+import getTopBlogs from "../controllers/blog/topBlogs";
 
 const router = Router();
 
@@ -40,6 +41,7 @@ router.post("/updateBlog/:id", updateBlog);
 router.get("/getBlog/:id", getBlogById);
 router.get("/getBlogPage", getBlogPage);
 router.post("/deleteBlog", deleteBlog);
+router.post("/getTopBlogs", getTopBlogs);
 
 router.post("/likeBlog/:id", likeBlog);
 router.post("/dislikeBlog/:id", dislikeBlog);
