@@ -9,6 +9,7 @@ const getBlogPage = async (req: Request, res: Response) => {
   try {
     const totalBlogCount = await Blog.countDocuments();
     const blogs = await Blog.find()
+      .populate("author")
       .limit(Number(limit))
       .skip(skip)
       .sort({ createdAt: -1 });

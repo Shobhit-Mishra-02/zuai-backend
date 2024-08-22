@@ -43,9 +43,7 @@ const login = async (req: Request, res: Response) => {
       }
     );
 
-    return res
-      .status(StatusCodes.OK)
-      .json({ message: "Login successful", token });
+    return res.status(StatusCodes.OK).json({ token, user });
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
