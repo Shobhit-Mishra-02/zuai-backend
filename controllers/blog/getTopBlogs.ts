@@ -8,8 +8,8 @@ const getTopBlogs = async (req: Request, res: Response) => {
   try {
     const blogs = await Blog.find()
       .populate("author")
-      .limit(Number(limit))
-      .sort({ likes: -1 });
+      .sort({ likeCount: -1 })
+      .limit(Number(limit));
 
     return res.status(StatusCodes.OK).json({ blogs });
   } catch (error) {
