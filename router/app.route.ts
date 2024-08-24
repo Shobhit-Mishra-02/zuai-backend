@@ -33,7 +33,7 @@ router.post("/login", login);
 
 router.use(authMiddelWare);
 
-router.get("/getUser/:id", getUser);
+router.get("/getUser/:id?", getUser);
 router.post("/updateUser/:id", updateUser);
 
 router.post("/createBlog", createBlog);
