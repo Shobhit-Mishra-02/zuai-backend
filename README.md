@@ -1,38 +1,18 @@
-# Express starter template with typescript
-
-This is just simple express starter template with typescript support and testing is done with jest and supertest. To get the express starter template with es6 support then select **es6** branch.
-
 ## Quick start
 
-- Clone the repository.
+```bash
 
-```shell
-git clone git@github.com:Shobhit-Mishra-02/express.git
-cd express-templates
-```
-
-- Install all the dependencies.
-
-```shell
+# install the dependencies
 npm install
-```
 
-- Run this command to create jest.config.js file
+# create a .env file in root
+touch .env
 
-```shell
-npx ts-jest config:init
-```
+# then put the content of .env.local to .env file
+cat .env.local > .env
 
-- That's it you are ready to rock !!
+# then assign the mongodb url in .env file
 
-## Start express app
-
-```shell
+# to start the server
 npm run start
-```
-
-## Running test
-
-```
-npm run test
 ```

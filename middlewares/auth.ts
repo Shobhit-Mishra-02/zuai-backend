@@ -23,8 +23,6 @@ const authMiddelWare = async (
       process.env.JWT_SECRET || "secret"
     ) as UserInterface;
 
-    console.log(decodedUser);
-
     const user = await User.findById(decodedUser._id);
 
     if (!user) {
