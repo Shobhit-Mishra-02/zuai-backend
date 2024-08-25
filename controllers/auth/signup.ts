@@ -1,14 +1,16 @@
-import User from "../../schema/user.schema";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import bcrypt from "bcrypt";
+import { signupService } from "../../services/auth.services";
+import { UserInterface } from "../../types";
 
 const signup = async (req: Request, res: Response) => {
-  let { email, password, firstName, lastName } = req.body;
+  const userDetails = req.body as Omit<
+    UserInterface,
+    "createdAt" | "updatedAt"
+  >;
 
   try {
-    password = bcrypt.hashSync(password, 10);
-    const user = await User.create({ email, password, firstName, lastName });
+    const user = await signupService(userDetails);
     return res
       .status(StatusCodes.CREATED)
       .json({ message: "User created", user });

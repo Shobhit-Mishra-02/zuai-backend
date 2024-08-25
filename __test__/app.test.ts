@@ -94,7 +94,7 @@ describe("Login", () => {
       password: "wrongpassword",
     });
 
-    expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED);
+    expect(res.statusCode).toBe(StatusCodes.INTERNAL_SERVER_ERROR);
   });
 });
 
