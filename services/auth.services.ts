@@ -1,4 +1,4 @@
-import AuthenticationRepo from "../repository/AuthRepo";
+import AuthenticationRepo from "../repository/auth.repo";
 import { UserInterface } from "../types";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
