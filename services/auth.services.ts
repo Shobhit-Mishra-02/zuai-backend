@@ -2,6 +2,8 @@ import AuthenticationRepo from "../repository/auth.repo";
 import { UserInterface } from "../types";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { AuthError } from "../error";
+import { StatusCodes } from "http-status-codes";
 
 const authRepo = new AuthenticationRepo();
 
@@ -9,7 +11,7 @@ export async function signupService(
   user: Omit<UserInterface, "createdAt" | "updatedAt">
 ) {
   if (!user.password) {
-    throw new Error("Password is required");
+    throw new AuthError("Password is required", StatusCodes.BAD_REQUEST);
   }
 
   user.password = bcrypt.hashSync(user.password, 10);
@@ -21,19 +23,22 @@ export async function signupService(
 
 export async function loginService(email: string, password: string) {
   if (!email || !password) {
-    throw new Error("Both email and password are required.");
+    throw new AuthError("Both email and password are required.");
   }
 
   const user = await authRepo.validateUser(email);
 
   if (!user) {
-    throw new Error("User not found");
+    throw new AuthError("User not found");
   }
 
   const isValidPassword = bcrypt.compareSync(password, user.password);
 
   if (!isValidPassword) {
-    throw new Error("email or password is not correct");
+    throw new AuthError(
+      "email or password is not correct",
+      StatusCodes.UNAUTHORIZED
+    );
   }
 
   const token = jwt.sign(

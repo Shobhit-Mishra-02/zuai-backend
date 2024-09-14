@@ -23,6 +23,8 @@ class BlogRepo {
       _id: blogId,
       usersLiked: userId,
     });
+
+    return blog;
   }
 
   async likeBlog(blogId: string, userId: string) {

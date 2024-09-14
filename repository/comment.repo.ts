@@ -44,6 +44,11 @@ class CommentRepo {
 
     return comments;
   }
+
+  async getCommentById(commentId: string) {
+    const comment = (await Comment.findById(commentId)) as CommentInterface;
+    return comment;
+  }
 }
 
 export default CommentRepo;
