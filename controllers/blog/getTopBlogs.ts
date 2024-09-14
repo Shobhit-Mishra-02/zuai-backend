@@ -1,16 +1,11 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import Blog from "../../schema/blog.schema";
+import { getTopBlogsService } from "../../services/blog.services";
 
 const getTopBlogs = async (req: Request, res: Response) => {
-  const { limit = 5 } = req.query;
-
   try {
-    const blogs = await Blog.find()
-      .populate("author")
-      .sort({ likeCount: -1 })
-      .limit(Number(limit));
-
+    const { limit = 5 } = req.query;
+    const blogs = await getTopBlogsService(+limit);
     return res.status(StatusCodes.OK).json({ blogs });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

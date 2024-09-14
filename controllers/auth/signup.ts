@@ -4,12 +4,11 @@ import { signupService } from "../../services/auth.services";
 import { UserInterface } from "../../types";
 
 const signup = async (req: Request, res: Response) => {
-  const userDetails = req.body as Omit<
-    UserInterface,
-    "createdAt" | "updatedAt"
-  >;
-
   try {
+    const userDetails = req.body as Omit<
+      UserInterface,
+      "createdAt" | "updatedAt"
+    >;
     const user = await signupService(userDetails);
     return res
       .status(StatusCodes.CREATED)

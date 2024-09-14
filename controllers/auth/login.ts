@@ -3,9 +3,8 @@ import { StatusCodes } from "http-status-codes";
 import { loginService } from "../../services/auth.services";
 
 const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
   try {
+    const { email, password } = req.body;
     const data = await loginService(email, password);
     return res.status(StatusCodes.OK).json(data);
   } catch (error) {

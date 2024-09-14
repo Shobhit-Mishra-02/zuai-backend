@@ -1,17 +1,12 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import Comment from "../../schema/comment.schema";
+import { getCommentPageService } from "../../services/comment.services";
 
 const getCommentPage = async (req: Request, res: Response) => {
-  const { page = 1, limit = 10 } = req.query;
-  const skip = (Number(page) - 1) * Number(limit);
-
   try {
-    const comments = await Comment.find()
-      .limit(limit as number)
-      .skip(skip)
-      .sort({ createdAt: -1 })
-      .populate("user");
+    const { page = 1, limit = 10 } = req.query;
+
+    const comments = await getCommentPageService(+page, +limit);
 
     return res.status(StatusCodes.OK).json({ comments });
   } catch (error) {

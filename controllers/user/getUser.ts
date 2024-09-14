@@ -1,18 +1,12 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import User from "../../schema/user.schema";
-import { UserInterface } from "../../types";
+import { getUserByIdService } from "../../services/user.services";
 
 const getUser = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  let user: UserInterface;
   try {
-    if (!id) {
-      user = res.locals.user as UserInterface;
-      return res.status(StatusCodes.OK).json(user);
-    }
+    const { id } = req.params;
+    const user = await getUserByIdService(id);
 
-    user = (await User.findById(id)) as UserInterface;
     return res.status(StatusCodes.OK).json(user);
   } catch (error) {
     res

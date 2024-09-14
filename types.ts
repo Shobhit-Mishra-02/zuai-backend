@@ -16,8 +16,8 @@ export interface BlogInterface {
   likeCount: number;
   usersLiked: string[];
   author: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface CommentInterface {

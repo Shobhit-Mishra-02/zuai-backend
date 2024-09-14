@@ -1,31 +1,20 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import Comment from "../../schema/comment.schema";
+import { updateCommentService } from "../../services/comment.services";
+import { CommentInterface } from "../../types";
 
 const updateComment = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { comment } = req.body;
-  const User = res.locals.user;
-
   try {
-    const comment = await Comment.findById(id);
-
-    if (!comment) {
-      return res.status(StatusCodes.NOT_FOUND).json({
-        message: "Comment not found",
-      });
-    }
-
-    if (User._id?.toString() !== comment.user?.toString()) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({
-        message: "You are not authorized to update this comment",
-      });
-    }
-
-    const updatedComment = await Comment.findByIdAndUpdate(
+    const { id } = req.params;
+    const { comment } = req.body;
+    const User = res.locals.user;
+    const updatedComment = await updateCommentService(
+      {
+        comment,
+        updatedAt: new Date(),
+      } as CommentInterface,
       id,
-      { comment, updatedAt: new Date() },
-      { new: true }
+      User._id as string
     );
 
     return res.status(StatusCodes.OK).json({

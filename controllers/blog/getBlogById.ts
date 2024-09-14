@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import Blog from "../../schema/blog.schema";
+import { getBlogByIdService } from "../../services/blog.services";
 
 const getBlogById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-
   try {
-    const blog = await Blog.findById(id).populate('author');
+    const { id } = req.params;
+    const blog = await getBlogByIdService(id);
     return res.status(StatusCodes.OK).json({ blog });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

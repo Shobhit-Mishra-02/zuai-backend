@@ -10,7 +10,7 @@ class BlogRepo {
   }
 
   async getBlogById(id: string) {
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(id).populate("author");
     return blog;
   }
 
@@ -86,6 +86,11 @@ class BlogRepo {
       .exec();
 
     return blogs;
+  }
+
+  async getBlogCount() {
+    const count = await Blog.countDocuments();
+    return count;
   }
 }
 

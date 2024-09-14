@@ -47,12 +47,11 @@ export const updateCommentService = async (
   return newComment;
 };
 
-export const getCommentPageService = async (page: number) => {
+export const getCommentPageService = async (page: number, limit: number) => {
   if (page < 0) {
     throw new CommentError("page can not be less than zero");
   }
 
-  const limit = 5;
   const skip = (page - 1) * limit;
 
   const comments = await commentRepo.getCommentPage(skip, limit);

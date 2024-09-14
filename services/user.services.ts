@@ -2,6 +2,7 @@ import UserRepo from "../repository/user.repo";
 import { UserInterface } from "../types";
 import { UserError } from "../error";
 import { StatusCodes } from "http-status-codes";
+import bcrypt from "bcrypt";
 
 const userRepo = new UserRepo();
 
@@ -12,12 +13,20 @@ export const getUserByIdService = async (userId: string) => {
 
 export const updateUserService = async (
   user: UserInterface,
+  targetUserId: string,
   userId: string
 ) => {
-  const currentUser = await userRepo.getUserById(userId);
+  if (!user) {
+    throw new UserError("user is required");
+  }
 
-  if (!currentUser) {
-    throw new UserError("user not found", StatusCodes.NOT_FOUND);
+  if (targetUserId !== userId) {
+    throw new UserError("user is not authorized", StatusCodes.UNAUTHORIZED);
+  }
+
+  if (user.password) {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    user.password = hashedPassword;
   }
 
   const newUser = await userRepo.UpdateUser(user, userId);
